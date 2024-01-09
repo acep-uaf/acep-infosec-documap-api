@@ -8,7 +8,7 @@ const isAdmin    = require('is-admin')
 function logger(message) {
   let now = tell_time()
   let ts = now['UTC']['ISO8601']
-  let logfile = path.join(process['CONF']['APP']['LOG_FILE'])
+  let logfile = path.join(process.CONF.APP.LOG_FILE)
 
   try {
     fs.appendFileSync(logfile, ts + ' : '+ message + "\n", 'utf8')
