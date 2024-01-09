@@ -1,0 +1,11 @@
+{
+  "APP": {
+    "RUN_DIR":"",
+    "CONF_DIR":"",
+    "DATA_DIR": "",
+    "TMP_DIR": "/var/tmp",
+    "LOG_DIR": "",
+    "API_TCP_PORT":8411,
+    "RUN_AS_ADMIN": false
+  }
+}

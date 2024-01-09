@@ -1,0 +1,17 @@
+Area,Control,Objective,Potential Assessment Methods,Key References
+AC,AC.L1-3.1.1 Authorized Access Control,"Limit system access to authorized users",Review of user accounts and permissions,Access control policy
+AC,AC.L1-3.1.1 Authorized Access Control,"Ensure mechanisms are in place for access enforcement",Check of access enforcement tools,Access enforcement procedures
+AC,AC.L1-3.1.2 Use Session Lock,"Implement session locks after periods of inactivity",Review of automatic lock settings,User session policy
+AC,AC.L1-3.1.2 Use Session Lock,"Educate users on importance of session locks",User training sessions,Training materials
+IA,IA.L1-3.1.3 Unique Identification,"Provide unique identification for all users",Audit of user accounts,User management policy
+IA,IA.L1-3.1.4 Authenticate Credentials,"Use strong authentication mechanisms for users",Inspection of authentication mechanisms,Authentication policy
+MP,MP.L1-3.1.5 Sanitize Media,"Ensure media is cleaned before disposal",Review of media disposal processes,Media protection policy
+MP,MP.L1-3.1.6 Protect Media,"Mark media to indicate levels of sensitivity",Visual inspection of media markings,Media marking guidelines
+PE,PE.L1-3.1.7 Escort Visitors,"Ensure all visitors are accompanied in secure areas",Physical security walkthrough,Visitor policy
+PE,PE.L1-3.1.8 Monitor Physical Access,"Use cameras and other tools to monitor physical access",Review of monitoring tools and logs,Physical security policy
+SC,SC.L1-3.1.9 Implement Firewalls,"Establish firewall rules to block unauthorized access",Inspection of firewall configurations,Firewall policy
+SC,SC.L1-3.1.10 Use Protection Technologies,"Deploy anti-malware solutions",Review of deployed solutions,Anti-malware policy
+SI,SI.L1-3.1.11 Update Software,"Ensure software patches are applied timely",Review of update schedules,Patch management policy
+SI,SI.L1-3.1.11 Update Software,"Validate integrity of software updates",Verification of software source and checksums,Software validation procedures
+...,[And so on for the remaining controls]
+
