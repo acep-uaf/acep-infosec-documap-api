@@ -4,11 +4,12 @@ var path         = require('path')
 var fs           = require('fs')
 var os           = require('os')
 const isAdmin    = require('is-admin')
+const config     = require('./config')
 
 function logger(message) {
   let now = tell_time()
   let ts = now['UTC']['ISO8601']
-  let logfile = path.join(process.CONF.APP.LOG_FILE)
+  let logfile = path.join(config.APP.LOG_FILE)
 
   try {
     fs.appendFileSync(logfile, ts + ' : '+ message + "\n", 'utf8')

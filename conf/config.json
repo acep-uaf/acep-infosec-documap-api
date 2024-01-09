@@ -1,10 +1,11 @@
 {
   "APP": {
+    "CONF_FILE":"",
     "RUN_DIR":"",
     "CONF_DIR":"",
     "DATA_DIR": "",
-    "TMP_DIR": "/var/tmp",
     "LOG_DIR": "",
+    "TMP_DIR": "/var/tmp",
     "API_TCP_PORT":8411
   },
   "SECURITY": {
