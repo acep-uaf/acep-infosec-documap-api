@@ -1,6 +1,7 @@
 {
   "APP": {
     "CONF_FILE":"",
+    "CREDENTIAL_FILE":"",
     "RUN_DIR":"",
     "CONF_DIR":"",
     "DATA_DIR": "",
@@ -11,6 +12,10 @@
   "SECURITY": {
     "RUN_AS_ADMIN": false,
     "HTTPS": false,
-    "ENFORCE_API_KEYS": false
+    "ENFORCE_API_KEYS": false,
+    "SSL":{
+      "KEY_FILE":"",
+      "CERT_FILE":""
+    }
   }
 }
