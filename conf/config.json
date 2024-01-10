@@ -10,6 +10,7 @@
   },
   "SECURITY": {
     "RUN_AS_ADMIN": false,
-    "ENFORCE_HTTPS": true
+    "HTTPS": false,
+    "ENFORCE_API_KEYS": false
   }
 }

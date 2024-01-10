@@ -59,4 +59,10 @@ config.APP.LOG_FILE = path.join(config.APP.LOG_DIR, config.PACKAGE.name + '.log'
 config.HOST = {}
 config.HOST.HOSTNAME = os.hostname()
 
+config.WEB = {}
+config.WEB.PROTO = "http://"
+if (config.SECURITY.HTTPS) {config.WEB.PROTO = "https://"}
+config.WEB.BASEHOST = 'localhost'
+config.WEB.BASE_URL = config.WEB.PROTO + config.WEB.BASEHOST + ':' + config.APP.API_TCP_PORT
+
 module.exports = config;

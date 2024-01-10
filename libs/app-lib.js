@@ -1,8 +1,8 @@
 // App Library FUnction from John Haverlack (john@haverlack.net)
 // License: ISC (https://opensource.org/licenses/ISC)
-var path         = require('path')
-var fs           = require('fs')
-var os           = require('os')
+const path       = require('path')
+const fs         = require('fs')
+const os         = require('os')
 const isAdmin    = require('is-admin')
 const config     = require('./config')
 

@@ -6,8 +6,9 @@
   "version_date": "2024-01-09",
   "description": "Cybersecurity Documentation Mapping API",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jehaverlack/acep-infosec-documap-api"
   },
   "author": "John Haverlack",
   "author_email": "jehaverlack@alaska.edqu",
@@ -22,6 +23,7 @@
     "htpasswd": "^2.4.5",
     "http-auth": "^4.1.9",
     "is-admin": "^3.0.0",
-    "netaddr": "^1.1.0"
+    "netaddr": "^1.1.0",
+    "uuid": "^9.0.1"
   }
 }
