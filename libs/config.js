@@ -65,4 +65,9 @@ if (config.SECURITY.HTTPS) {config.WEB.PROTO = "https://"}
 config.WEB.BASEHOST = 'localhost'
 config.WEB.BASE_URL = config.WEB.PROTO + config.WEB.BASEHOST + ':' + config.APP.API_TCP_PORT
 
+for (let inc in config.INCLUDES) {
+  console.log("INCLUDE: " + inc + ': '+ config.INCLUDES[inc])
+  config[inc] = JSON.parse(fs.readFileSync(path.join(config.INCLUDES[inc])), 'utf8')
+}
+
 module.exports = config;

@@ -17,5 +17,8 @@
       "KEY_FILE":"",
       "CERT_FILE":""
     }
+  },
+  "INCLUDES": {
+    "DOCUMENTS": "conf/documents.json"
   }
 }

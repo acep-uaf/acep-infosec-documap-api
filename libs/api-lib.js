@@ -27,6 +27,13 @@ function get_usage(api_key) {
   usage['CONFIG'] = config.WEB.BASE_URL + '/config'
 
   usage['API'] = {}
+  usage['API']['DESC'] = "API Usage"
+  usage['API']['URL']  = config.WEB.BASE_URL + '/api'
+
+
+  usage['API']['DOCUMENTS'] = {}
+  usage['API']['DOCUMENTS']['DESC'] = "List of Available Documents"
+  usage['API']['DOCUMENTS']['URL']  = config.WEB.BASE_URL + '/api/documents'
 
   return usage
 }
@@ -57,3 +64,85 @@ function access_denied(resout) {
 }
 
 exports.access_denied = access_denied
+
+
+// API Query Functions
+
+// Get a list of Documents
+
+function get_documents() {
+  let documents = {}
+
+  for (let did in config.DOCUMENTS) {
+    documents[did] = {}
+
+    for (did_key in config.DOCUMENTS[did]) {
+      switch (did_key) {
+        case 'TITLE':
+          documents[did][did_key] = config.DOCUMENTS[did][did_key]
+          documents[did]['URL'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did)
+          break;
+
+        case 'VERSIONS':
+          documents[did][did_key] = {}
+          for (dv in config.DOCUMENTS[did][did_key]) {
+            console.log(did + ' | ' + did_key + ' | ' + dv)
+            documents[did][did_key][dv] = {}
+            for (dt in config.DOCUMENTS[did][did_key][dv]) {
+              switch (dt) {
+                case 'CSV':
+                  // console.log(did + ' | ' + did_key + ' | ' + dv + ' | ' + dt)
+                  documents[did][did_key][dv][dt] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dt)  
+                  documents[did][did_key][dv]['CSV2JSON'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/CSV2JSON'   
+                  break;
+              
+                default:
+                  // console.log(did + ' | ' + did_key + ' | ' + dv + ' | ' + dt)
+                  documents[did][did_key][dv][dt] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dt)    
+                  break;
+              }
+            }
+          }
+          break;
+          
+        default:
+          documents[did][did_key] = config.DOCUMENTS[did][did_key]
+          break;
+      }
+    }   
+  }
+  
+  return documents
+}
+
+exports.get_documents = get_documents
+
+// Get Sepcific Document
+function get_document(doc_id) {
+  let documents = {}
+
+  switch (doc_id) {
+    case "":
+      for (let did in config.DOCUMENTS) {
+        documents[did] = {}
+    
+        for (did_key in config.DOCUMENTS[did]) {
+          switch (did_key) {
+            case 'TITLE':
+              documents[did][did_key] = config.DOCUMENTS[did][did_key]
+              documents[did]['URL'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did)
+          
+            default:
+              documents[did][did_key] = config.DOCUMENTS[did][did_key]
+              break;
+          }
+        }   
+      }
+      break;
+
+  }
+  
+  return documents
+}
+
+exports.get_document = get_document

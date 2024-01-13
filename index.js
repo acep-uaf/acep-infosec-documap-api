@@ -30,47 +30,98 @@ if (config.SECURITY.ENFORCE_API_KEYS) {}  // TBD
 // ============= API Routing ============
 let api_key='API-KEY'
 
-// Usage
+
+// API Queries
+
+
+app.use('/api/:context/:component', function(req, res) {
+  let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
+
+  switch (req.params.context) {
+    case 'documents':
+      res.writeHead(200, {'Content-Type': 'application/json'})
+      res.end(JSON.stringify(apilib.get_document(decodeURIComponent(req.params.component)), null, 2))
+      break;
+  
+    default:
+      res.writeHead(200, {'Content-Type': 'application/json'})
+      res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
+      break;
+  }
+})
+
+app.use('/api/:context', function(req, res) {
+  let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
+
+  switch (req.params.context) {
+    case 'documents':
+      res.writeHead(200, {'Content-Type': 'application/json'})
+      res.end(JSON.stringify(apilib.get_documents(), null, 2))
+      break;
+  
+    default:
+      res.writeHead(200, {'Content-Type': 'application/json'})
+      res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
+      break;
+  }
+})
+
 // app.use('/api', function(req, res) {
 //   if (req.query.hasOwnProperty('key')) {
-//     let valid_api_key = apilib.verify_key(req.query.key)
-//
-//     switch (valid_api_key) {
-//       case true:
-//         res.writeHead(200, {'Content-Type': 'application/json'})
-//         res.end(JSON.stringify(apilib.get_usage(req.query.key), null, 2))
-//         break;
-//       case false:
-//         apilib.access_denied(res)
-//         break;
-//     }
-//   } else {
-//     apilib.access_denied(res)
-//   }
+//     res.writeHead(200, {'Content-Type': 'application/json'})
+//     res.end(JSON.stringify(apilib.get_usage(req.query.key), null, 2))
+
+
+//   // Added API Key Based Access
+//   //   let valid_api_key = apilib.verify_key(req.query.key)
+
+//   //   switch (valid_api_key) {
+//   //     case true:
+//   //       res.writeHead(200, {'Content-Type': 'application/json'})
+//   //       res.end(JSON.stringify(apilib.get_usage(req.query.key), null, 2))
+//   //       break;
+//   //     case false:
+//   //       apilib.access_denied(res)
+//   //       break;
+//   //   }
+//   // } else {
+//   //   apilib.access_denied(res)
+//   // }
 // })
 
 app.use('/favicon.ico', function(req, res) {
+  // applib.logger('INFO: ACCESS GRANTED: ' + req.originalUrl + ' TO: '+ req.connection.remoteAddress)
   res.sendFile(path.join(__dirname, 'favicon.ico'))
 })
 
-
+// Usage
 app.use('/help', function(req, res) {
-    res.writeHead(200, {'Content-Type': 'application/json'})
-    res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
+  // applib.logger('INFO: ACCESS GRANTED: ' + req.originalUrl + ' TO: '+ req.connection.remoteAddress)
+
+  res.writeHead(200, {'Content-Type': 'application/json'})
+  res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
 })
 
 app.use('/usage', function(req, res) {
-    res.writeHead(200, {'Content-Type': 'application/json'})
-    res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
+  // applib.logger('INFO: ACCESS GRANTED: ' + req.originalUrl + ' TO: '+ req.connection.remoteAddress)
+
+  res.writeHead(200, {'Content-Type': 'application/json'})
+   res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
 })
 
+// Config - DISABLE For Production
 app.use('/config', function(req, res) {
-    res.writeHead(200, {'Content-Type': 'application/json'})
-    res.end(JSON.stringify(config, null, 2))
+  // applib.logger('INFO: ACCESS GRANTED: ' + req.originalUrl + ' TO: '+ req.connection.remoteAddress)
+
+  res.writeHead(200, {'Content-Type': 'application/json'})
+  res.end(JSON.stringify(config, null, 2))
 })
 
 
 app.use('/', function(req, res) {
+  // applib.logger('INFO: ACCESS GRANTED: ' + req.originalUrl + ' TO: '+ req.connection.remoteAddress)
 
     // let valid_api_key = apilib.verify_key(req.query.key)
     // switch (valid_api_key) {

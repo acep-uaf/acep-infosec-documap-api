@@ -17,7 +17,11 @@
   "copyright_holder": "Alaska Center for Energy and Power, University of Alaska Fairbanks",
   "copyright_url": "https://acep.uaf.edu/",
   "copyright_year": "2024",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
+    "csv-parser": "^3.0.0",
     "ecstatic": "^4.1.4",
     "express": "^4.17.1",
     "htpasswd": "^2.4.5",
