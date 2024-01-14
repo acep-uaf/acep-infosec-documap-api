@@ -65,9 +65,17 @@ if (config.SECURITY.HTTPS) {config.WEB.PROTO = "https://"}
 config.WEB.BASEHOST = 'localhost'
 config.WEB.BASE_URL = config.WEB.PROTO + config.WEB.BASEHOST + ':' + config.APP.API_TCP_PORT
 
+
+// Import Include Configs
 for (let inc in config.INCLUDES) {
-  console.log("INCLUDE: " + inc + ': '+ config.INCLUDES[inc])
+  // console.log("INCLUDE: " + inc + ': '+ config.INCLUDES[inc])
   config[inc] = JSON.parse(fs.readFileSync(path.join(config.INCLUDES[inc])), 'utf8')
+  if (config[inc].hasOwnProperty('INCLUDES')) {
+    for (let incinc in config[inc]['INCLUDES']) {
+      console.log("DEBUG: DOC INC: " + path.join(config.APP.CONF_DIR, config[inc]['INCLUDES'][incinc]))
+      config[inc][incinc] = JSON.parse(fs.readFileSync(path.join(config.APP.CONF_DIR, config[inc]['INCLUDES'][incinc])), 'utf8')
+    }
+  }
 }
 
 module.exports = config;

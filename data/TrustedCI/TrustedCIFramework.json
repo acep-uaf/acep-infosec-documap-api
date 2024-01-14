@@ -1,0 +1,108 @@
+{
+    "Framework Core": {
+        "Pillars": [
+            "Mission Alignment",
+            "Governance",
+            "Resources",
+            "Controls"
+        ],
+        "16 Musts": {
+            "Must 1": {
+                "Name": "Mission Focus",
+                "Pillar": "Mission Alignment",
+                "Summary": "Organizations must tailor their cybersecurity program to the organization’s mission.",
+                "Description": "Cybersecurity is not undertaken as an end unto itself: the ultimate goal of a cybersecurity program is to support the organization’s mission. “The mission” is the foundational motivating force driving decision making: it is made up of the task(s), purpose(s), and related action(s) that the organization treats as most important or essential. The program’s implementation must account for the positive and negative impacts security can have on the organization’s mission."
+            },
+            "Must 2": {
+                "Name": "Stakeholders & Obligations",
+                "Pillar": "Mission Alignment",
+                "Summary": "Organizations must identify and account for cybersecurity stakeholders and obligations.",
+                "Description": "Cybersecurity stakeholders are people or entities with interest in or affected by an organization’s cybersecurity. Cybersecurity obligations are any internally or externally imposed processes or practices that impact the operation of the organization’s cybersecurity program. Accounting for these stakeholders and obligations involves making and following through on conscious, documented decisions with regard to them."
+            },
+            "Must 3": {
+                "Name": "Information Assets",
+                "Pillar": "Mission Alignment",
+                "Summary": "Organizations must establish and maintain documentation of information assets.",
+                "Description": "Information assets are valuable, sensitive, and/or mission critical information and information systems. Information asset documentation is the collection of artifacts describing the cybersecurity relevant details of information assets presented in a form that is useful to cybersecurity professionals and decision makers."
+            },
+            "Must 4": {
+                "Name": "Asset Classification",
+                "Pillar": "Mission Alignment",
+                "Summary": "Organizations must establish and implement a structure for classifying information assets as they relate to the organization’s mission.",
+                "Description": "Information asset classification is used by an organization to enable the assignment of the organization’s information assets into organization-defined categories. The categories include the asset’s sensitivity in terms of mission impact and stakeholder requirements. These categories express the types and level of protection required for assets and ultimately are used to aid in control selection and tailoring."
+            },
+            "Must 5": {
+                "Name": "Leadership",
+                "Pillar": "Governance",
+                "Summary": "Organizations must involve leadership in cybersecurity decision making.",
+                "Description": "Organizational leadership includes the senior executives and other decision makers responsible for an organization. These are the people ultimately responsible for the organization who make final decisions regarding the highest priorities. Common leadership roles/titles include Director, Board, Chairman, Chief, Executive, Commander, President, Vice President, Partner, Principal, Owner, Founder, and Secretary. Leaders in these roles are in the best position to adjudicate competing demands for resources across the organization, to include prioritizing cybersecurity."
+            },
+            "Must 6": {
+                "Name": "Risk Acceptance",
+                "Pillar": "Governance",
+                "Summary": "Organizations must formalize roles and responsibilities for cybersecurity risk acceptance.",
+                "Description": "Risks are uncertain events or conditions—such as a successful cyber attack—that, if they occur, have a positive or negative effect on the organization’s mission. Risk acceptance is a decision to acknowledge a risk and not take further action unless the risk occurs. Organizations apply a variety of strategies to manage risk, but decisions to accept risks are of central importance and complexity in cybersecurity. Formalization of roles and responsibilities means documenting them in organizational policy and using them to guide delegation of authority and accountability."
+            },
+            "Must 7": {
+                "Name": "Cybersecurity Lead",
+                "Pillar": "Governance",
+                "Summary": "Organizations must establish a lead role with responsibility to advise and provide services to the organization on cybersecurity matters.",
+                "Description": "Due to the complexity and breadth of cybersecurity issues and the need for coordinated decision making, organizations require an individual role to lead cybersecurity. This position, often referred to as the Chief Information Security Officer (CISO), ensures the program educates and advises decision makers on cybersecurity matters, including risk identification and mitigation, and policy development. The position also provides leadership for services like incident response coordination, and cybersecurity control selection and monitoring."
+            },
+            "Must 8": {
+                "Name": "Comprehensive Application",
+                "Pillar": "Governance",
+                "Summary": "Organizations must ensure the cybersecurity program extends to all entities with access to or authority over information assets.",
+                "Description": "The entities may be either individuals or organizations. Access includes the logical or physical ability to view, create, modify, or destroy information, or modify or destroy information systems. Authority includes legal, administrative, logical, or physical control of information assets."
+            },
+            "Must 9": {
+                "Name": "Policy",
+                "Pillar": "Governance",
+                "Summary": "Organizations must develop, adopt, explain, follow, enforce, and revise cybersecurity policies.",
+                "Description": "“Policy” refers to documented normative statements adopted by an organization to govern human behavior. These include authoritative documented statements of “policy,” but can also include “procedures” and other normative guidance. Some amount of policy is needed to formalize and communicate about a cybersecurity program. Processes to develop, adopt, explain (e.g., provide notice and training), follow, enforce, and revise policies are necessary to make policies an effective component of a cybersecurity program, and keep the policies in line with the organization’s mission."
+            },
+            "Must 10": {
+                "Name": "Evaluation & Refinement",
+                "Pillar": "Governance",
+                "Summary": "Organizations must evaluate and refine their cybersecurity programs.",
+                "Description": "Programmatic evaluations are how the organization determines whether the cybersecurity program is achieving its purpose. Refinements are any changes designed to improve the program’s efficiency or effectiveness. Evaluation and refinement of a cybersecurity program can take many forms depending on the formality and scope of the assessment and the type of evaluation (e.g., planned, comprehensive program evaluations; internal self-evaluations following an incident)."
+            },
+            "Must 11": {
+                "Name": "Adequate Resources",
+                "Pillar": "Resources",
+                "Summary": "Organizations must devote adequate resources to address unacceptable cybersecurity risk.",
+                "Description": "The organization’s cybersecurity program requires resources to protect the organization’s mission. These include budgeted funds and personnel, as well as external resources (e.g., cybersecurity tools and services). An adequate level of each type of resource must be dedicated to cybersecurity. If an organization determines that the magnitude of cybersecurity risk is unacceptable, then resources must be brought to bear to address that risk."
+            },
+            "Must 12": {
+                "Name": "Budget",
+                "Pillar": "Resources",
+                "Summary": "Organizations must establish and maintain a cybersecurity budget.",
+                "Description": "Cybersecurity budgets are financial plans that commit specific resources for the organization’s cybersecurity efforts over a designated period of time. Cybersecurity budgets serve an important documentation and planning function, clearly stating in advance which resources the organization is committing specifically to cybersecurity. Cybersecurity budgets allow for cybersecurity decision makers to plan and execute cybersecurity functions in a more deliberative manner, and demonstrate the organization’s commitment to investing in cybersecurity."
+            },
+            "Must 13": {
+                "Name": "Personnel",
+                "Pillar": "Resources",
+                "Summary": "Organizations must allocate personnel resources to cybersecurity.",
+                "Description": "Personnel resources are commitments made by an organization to assign human effort to particular activities on behalf of the organization. Personnel resources allocated to cybersecurity include both full-time cybersecurity employees and employees with partial cybersecurity responsibilities. Personnel resources allocated to cybersecurity may be assigned to carry out a number of organizational activities, including security operations, governance, management, architecture, and incident response."
+            },
+            "Must 14": {
+                "Name": "External Resources",
+                "Pillar": "Resources",
+                "Summary": "Organizations must identify external cybersecurity resources to support the cybersecurity program.",
+                "Description": "External resources include services, tools, and collaborators outside of the organization that can be leveraged to support the cybersecurity program. Identifying them, picking judiciously, and using them can greatly benefit the organization and optimize local resources. Because the external organizations vary widely, leveraging these resources requires careful, advanced planning to maximize the benefit to the organization."
+            },
+            "Must 15": {
+                "Name": "Baseline Control Set",
+                "Pillar": "Controls",
+                "Summary": "Organizations must adopt and use a baseline control set.",
+                "Description": "Controls are specific administrative, technical, and physical safeguards and countermeasures applied to reduce cybersecurity risk. A baseline control set is a predetermined set of controls used as a default when selecting security controls for information assets. The baseline control set does not determine what security controls an organization must implement; rather, it provides a foundation from which an organization tailors control selection based on the needs of its mission. Baseline control sets vary in the number, specificity, and goals of the controls it describes. Baseline control sets may be legally imposed when handling specific types of data. In other cases, organizations can select a well-maintained control set that is based on evidence of what works to reduce cybersecurity risk."
+            },
+            "Must 16": {
+                "Name": "Additional & Alternate Controls",
+                "Pillar": "Controls",
+                "Summary": "Organizations must select and deploy additional and alternate controls as warranted.",
+                "Description": "Controls are specific administrative, technical, and physical safeguards and countermeasures. The specific controls included in baseline control sets may be insufficient in total to optimally balance risk mitigation with risk-taking necessary for mission success. Additional controls are those deployed to address unacceptable risks not covered by the baseline. Alternate controls are those deployed to mitigate unacceptable risks if implementing the alternate controls has a more positive impact on mission success than the baseline control."
+            }
+        }
+    }
+}

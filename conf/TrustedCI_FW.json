@@ -1,0 +1,16 @@
+{
+    "TrustedCI FW": {
+        "TITLE":"Trusted CI Framework",
+        "SOURCE": {
+            "WEBSITE":"https://www.trustedci.org/framework/core"
+        },
+        "VERSIONS":{
+            "v1.0":{ 
+                "PDF_SOURCE":"https://zenodo.org/record/4562447/files/The%20Trusted%20CI%20Framework%20Implementation%20Guide%20v1.0.pdf?download=1",
+                "PDF":"TrustedCI/The Trusted CI Framework Implementation Guide v1.0.pdf",
+                "JSON":"TrustedCI/TrustedCIFramework.json"
+            }      
+        }
+
+    }
+}

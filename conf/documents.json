@@ -1,15 +1,6 @@
 {
-    "NIST SP 800-171": {
-        "TITLE":"Protecting Controlled Unclassified Information in Nonfederal Systems and Organizations",
-        "VERSIONS":{
-            "R2":{ 
-                "PDF":"data/NIST/NIST.SP.800-171r2.pdf",
-                "CSV":"data/NIST/sp800-171r2-security-reqs.csv"
-            },
-            "R3":{ 
-                "PDF":"data/NIST/NIST.SP.800-171r3.fpd.pdf"
-            }      
-        }
-
+    "INCLUDES": {
+        "NIST_800-171":"NIST_800-171.json",
+        "TrustedCI_FW":"TrustedCI_FW.json"
     }
 }
