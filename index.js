@@ -33,40 +33,56 @@ let api_key='API-KEY'
 
 // API Queries
 
+app.use('/api/*', function(req, res) {
+  const segments = req.params[0].split('/');
+  const req_array = segments.filter(segment => segment !== ''); // Remove empty segments
 
-app.use('/api/:context/:component', function(req, res) {
-  let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
 
-  switch (req.params.context) {
-    case 'documents':
-      res.writeHead(200, {'Content-Type': 'application/json'})
-      res.end(JSON.stringify(apilib.get_document(decodeURIComponent(req.params.component)), null, 2))
-      break;
-  
-    default:
-      res.writeHead(200, {'Content-Type': 'application/json'})
-      res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
-      break;
-  }
+  // res.writeHead(200, {'Content-Type': 'application/json'})
+  // res.end(JSON.stringify(apilib.api_router(req_array)), null, 2))
+  const responseData = apilib.api_router(req_array);
+  res.status(200).json(responseData);
 })
 
-app.use('/api/:context', function(req, res) {
-  let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-  applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
 
-  switch (req.params.context) {
-    case 'documents':
-      res.writeHead(200, {'Content-Type': 'application/json'})
-      res.end(JSON.stringify(apilib.get_documents(), null, 2))
-      break;
+
+
+
+// app.use('/api/:context/:component', function(req, res) {
+//   let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+//   applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
+
+//   switch (req.params.context) {
+//     case 'documents':
+//       res.writeHead(200, {'Content-Type': 'application/json'})
+//       res.end(JSON.stringify(apilib.get_document(decodeURIComponent(req.params.component)), null, 2))
+//       break;
   
-    default:
-      res.writeHead(200, {'Content-Type': 'application/json'})
-      res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
-      break;
-  }
-})
+//     default:
+//       res.writeHead(200, {'Content-Type': 'application/json'})
+//       res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
+//       break;
+//   }
+// })
+
+// app.use('/api/:context', function(req, res) {
+//   let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+//   applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
+
+//   switch (req.params.context) {
+//     case 'documents':
+//       res.writeHead(200, {'Content-Type': 'application/json'})
+//       res.end(JSON.stringify(apilib.get_documents(), null, 2))
+//       break;
+  
+//     default:
+//       res.writeHead(200, {'Content-Type': 'application/json'})
+//       res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
+//       break;
+//   }
+// })
 
 // app.use('/api', function(req, res) {
 //   if (req.query.hasOwnProperty('key')) {
