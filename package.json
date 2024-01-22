@@ -3,12 +3,12 @@
   "title": "CyberDocMap API",
   "abbr": "cdma",
   "version": "1.0.0",
-  "version_date": "2024-01-09",
+  "version_date": "2024-01-22",
   "description": "Cybersecurity Documentation Mapping API",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jehaverlack/acep-infosec-documap-api"
+    "url": "https://github.com/acep-uaf/acep-infosec-documap-api"
   },
   "author": "John Haverlack",
   "author_email": "jehaverlack@alaska.edqu",

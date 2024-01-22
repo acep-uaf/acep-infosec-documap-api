@@ -27,7 +27,7 @@ nvm install --lts
 
 Clone the code
 ```
-git clone git@github.com:jehaverlack/acep-infosec-documap-api.git
+git clone git@github.com:acep-uaf/acep-infosec-documap-api.git
 ```
 
 Cd to code directory
