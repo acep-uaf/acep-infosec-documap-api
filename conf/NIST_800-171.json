@@ -1,23 +1,29 @@
 {
-    "NIST SP 800-171": {
-        "TITLE":"Protecting Controlled Unclassified Information in Nonfederal Systems and Organizations",
-        "SOURCE": {
-            "WEBSITE":"https://csrc.nist.gov/pubs/sp/800/171/r2/upd1/final"
-        },
-        "VERSIONS":{
-            "R2":{ 
+    "DOC_ID":"NIST SP 800-171",
+    "TITLE":"Protecting Controlled Unclassified Information in Nonfederal Systems and Organizations",
+    "SOURCE": {
+        "WEBSITE":"https://csrc.nist.gov/pubs/sp/800/171/r2/upd1/final"
+    },
+    "VERSIONS":{
+        "R2":{
+            "SOURCE" :{
                 "WEBSITE":"https://csrc.nist.gov/pubs/sp/800/171/r2/upd1/final",
-                "PDF_SOURCE":"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171r2.pdf",
-                "PDF":"NIST/NIST.SP.800-171r2.pdf",
-                "CSV_SOURCE":"https://csrc.nist.gov/files/pubs/sp/800/171/r2/upd1/final/docs/sp800-171r2-security-reqs.csv",
-                "CSV":"NIST/sp800-171r2-security-reqs.csv"
+                "PDF":"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171r2.pdf",
+                "CSV":"https://csrc.nist.gov/files/pubs/sp/800/171/r2/upd1/final/docs/sp800-171r2-security-reqs.csv"
             },
-            "R3":{
+            "API":{
+                "PDF":"NIST/NIST.SP.800-171r2.pdf",
+                "CSV":"NIST/sp800-171r2-security-reqs.csv"    
+            }
+        },
+        "R3":{
+            "SOURCE":{
                 "WEBSITE":"https://csrc.nist.gov/pubs/sp/800/171/r3/ipd",
-                "PDF_SOURCE":"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171r3.ipd.pdf", 
+                "PDF":"https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171r3.ipd.pdf"
+            },
+            "API": {
                 "PDF":"NIST/NIST.SP.800-171r3.fpd.pdf"
-            }      
-        }
-
+            }
+        }      
     }
 }

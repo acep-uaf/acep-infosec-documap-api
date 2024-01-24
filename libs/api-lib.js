@@ -40,6 +40,30 @@ function get_usage(api_key) {
 exports.get_usage = get_usage
 
 
+function api_router(req_array) {
+
+  applib.logger(JSON.stringify(req_array, null, 2))
+
+  switch (req_array[0]) {
+    case 'documents':
+      let documents = get_documents()
+      if (req_array[1]) {
+        if (Object.keys(documents).includes(req_array[1]))  {
+          return get_document(req_array[1])
+        } else {
+          return get_documents()
+        }
+      } else {
+        return get_documents()
+      }  
+    default:
+      return get_usage()
+      break;
+  }
+}
+
+exports.api_router = api_router
+
 
 function verify_key(api_key) {
   let verfied = false
@@ -73,32 +97,49 @@ exports.access_denied = access_denied
 function get_documents() {
   let documents = {}
 
-  for (let did in config.DOCUMENTS) {
+  for (let did in config.DOCUMENTS) { // did = Document ID
     documents[did] = {}
 
     for (did_key in config.DOCUMENTS[did]) {
       switch (did_key) {
         case 'TITLE':
           documents[did][did_key] = config.DOCUMENTS[did][did_key]
-          documents[did]['URL'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did)
+          documents[did]['API_URL'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did)
           break;
 
         case 'VERSIONS':
           documents[did][did_key] = {}
-          for (dv in config.DOCUMENTS[did][did_key]) {
-            console.log(did + ' | ' + did_key + ' | ' + dv)
+          for (dv in config.DOCUMENTS[did][did_key]) { // dv = Doc Version
+            // console.log(did + ' | ' + did_key + ' | ' + dv)
             documents[did][did_key][dv] = {}
-            for (dt in config.DOCUMENTS[did][did_key][dv]) {
+            documents[did][did_key][dv]['API_URL'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + dv
+      
+            for (dt in config.DOCUMENTS[did][did_key][dv]) { // dt = Doc Type
               switch (dt) {
                 case 'CSV':
                   // console.log(did + ' | ' + did_key + ' | ' + dv + ' | ' + dt)
                   documents[did][did_key][dv][dt] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dt)  
                   documents[did][did_key][dv]['CSV2JSON'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/CSV2JSON'   
                   break;
-              
+
+                case 'WEBSITE':
+                  documents[did][did_key][dv][dt] = config.DOCUMENTS[did][did_key][dv][dt]
+                  break;
+
+                case 'SOURCE':
+                  documents[did][did_key][dv][dt] = config.DOCUMENTS[did][did_key][dv][dt]
+                  break;
+  
+                case 'API':
+                  documents[did][did_key][dv][dt] = {}
+                  for (dau in config.DOCUMENTS[did][did_key][dv][dt]) { // Document API URL
+                    documents[did][did_key][dv][dt][dau] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dau)
+                  }
+                  break;
+                
                 default:
                   // console.log(did + ' | ' + did_key + ' | ' + dv + ' | ' + dt)
-                  documents[did][did_key][dv][dt] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dt)    
+                    
                   break;
               }
             }
@@ -112,6 +153,7 @@ function get_documents() {
     }   
   }
   
+  delete documents.INCLUDES
   return documents
 }
 
