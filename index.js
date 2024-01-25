@@ -28,10 +28,23 @@ if (config.SECURITY.ENFORCE_API_KEYS) {}  // TBD
 
 
 // ============= API Routing ============
-let api_key='API-KEY'
+let api_key='API-KEY'  // Not currently Used
 
 
 // API Queries
+
+// app.use('/api/*', function(req, res) {
+//   const segments = req.params[0].split('/');
+//   const req_array = segments.filter(segment => segment !== ''); // Remove empty segments
+
+//   const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+//   applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
+
+//   // res.writeHead(200, {'Content-Type': 'application/json'})
+//   // res.end(JSON.stringify(apilib.api_router(req_array)), null, 2))
+//   const responseData = apilib.api_router(req_array);
+//   res.status(200).json(responseData);
+// })
 
 app.use('/api/*', function(req, res) {
   const segments = req.params[0].split('/');
@@ -40,72 +53,39 @@ app.use('/api/*', function(req, res) {
   const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
 
-  // res.writeHead(200, {'Content-Type': 'application/json'})
-  // res.end(JSON.stringify(apilib.api_router(req_array)), null, 2))
   const responseData = apilib.api_router(req_array);
-  res.status(200).json(responseData);
+  
+  // Check for the content type in the response data
+  const contentType = responseData['CONTENT-TYPE'];
+
+  switch (contentType) {
+    case 'application/json':
+      res.status(200).json(responseData['PAYLOAD']);
+      break;
+
+    case 'application/pdf':
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'inline; filename="' + responseData['FILENAME'] + '"');
+      res.status(200).send(responseData['PAYLOAD']);
+      break;
+
+    case 'text/csv':
+      // Handle CSV content
+      // Convert your responseData['PAYLOAD'] to CSV format
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename="' + responseData['FILENAME'] + '"');
+      res.status(200).send(responseData['PAYLOAD']);
+      break;
+
+    // Add other cases as needed for different content types
+
+    default:
+      // Default response, e.g., if the content type is not supported
+      res.status(415).send('Unsupported Media Type');
+  }
 })
 
 
-
-
-
-// app.use('/api/:context/:component', function(req, res) {
-//   let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-//   applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
-
-//   switch (req.params.context) {
-//     case 'documents':
-//       res.writeHead(200, {'Content-Type': 'application/json'})
-//       res.end(JSON.stringify(apilib.get_document(decodeURIComponent(req.params.component)), null, 2))
-//       break;
-  
-//     default:
-//       res.writeHead(200, {'Content-Type': 'application/json'})
-//       res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
-//       break;
-//   }
-// })
-
-// app.use('/api/:context', function(req, res) {
-//   let fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-//   applib.logger('INFO: ACCESS GRANTED: ' + fullUrl  + ' TO: '+ req.connection.remoteAddress)
-
-//   switch (req.params.context) {
-//     case 'documents':
-//       res.writeHead(200, {'Content-Type': 'application/json'})
-//       res.end(JSON.stringify(apilib.get_documents(), null, 2))
-//       break;
-  
-//     default:
-//       res.writeHead(200, {'Content-Type': 'application/json'})
-//       res.end(JSON.stringify(apilib.get_usage(api_key), null, 2))
-//       break;
-//   }
-// })
-
-// app.use('/api', function(req, res) {
-//   if (req.query.hasOwnProperty('key')) {
-//     res.writeHead(200, {'Content-Type': 'application/json'})
-//     res.end(JSON.stringify(apilib.get_usage(req.query.key), null, 2))
-
-
-//   // Added API Key Based Access
-//   //   let valid_api_key = apilib.verify_key(req.query.key)
-
-//   //   switch (valid_api_key) {
-//   //     case true:
-//   //       res.writeHead(200, {'Content-Type': 'application/json'})
-//   //       res.end(JSON.stringify(apilib.get_usage(req.query.key), null, 2))
-//   //       break;
-//   //     case false:
-//   //       apilib.access_denied(res)
-//   //       break;
-//   //   }
-//   // } else {
-//   //   apilib.access_denied(res)
-//   // }
-// })
 
 app.use('/favicon.ico', function(req, res) {
   // applib.logger('INFO: ACCESS GRANTED: ' + req.originalUrl + ' TO: '+ req.connection.remoteAddress)

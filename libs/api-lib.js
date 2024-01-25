@@ -41,23 +41,35 @@ exports.get_usage = get_usage
 
 
 function api_router(req_array) {
+  let payload = {}
+  payload['CONTENT-TYPE'] = 'application/json'
 
   applib.logger(JSON.stringify(req_array, null, 2))
 
   switch (req_array[0]) {
     case 'documents':
       let documents = get_documents()
+      applib.logger(JSON.stringify(Object.keys(documents['PAYLOAD']), null, 2))
       if (req_array[1]) {
-        if (Object.keys(documents).includes(req_array[1]))  {
-          return get_document(req_array[1])
+        if (Object.keys(documents['PAYLOAD']).includes(req_array[1]))  {
+          applib.logger("DEBUG: Checkpoint 1")
+          return get_document(req_array)
         } else {
-          return get_documents()
+          applib.logger("DEBUG: Checkpoint 2")
+          let err = {}
+          err['ERROR'] = "Unknown Document: " + req_array[1]
+          payload['PAYLOAD'] = err
+          return payload
         }
       } else {
+        applib.logger("DEBUG: Checkpoint 3")
         return get_documents()
       }  
     default:
-      return get_usage()
+      applib.logger("DEBUG: Checkpoint 4")
+
+      payload['PAYLOAD'] = get_usage()
+      return payload
       break;
   }
 }
@@ -95,6 +107,7 @@ exports.access_denied = access_denied
 // Get a list of Documents
 
 function get_documents() {
+  applib.logger("DEBUG: get_documents")
   let documents = {}
 
   for (let did in config.DOCUMENTS) { // did = Document ID
@@ -154,37 +167,105 @@ function get_documents() {
   }
   
   delete documents.INCLUDES
-  return documents
+  let payload = {}
+  payload['CONTENT-TYPE'] = 'application/json'
+  payload['PAYLOAD'] = documents
+
+  return payload
 }
 
 exports.get_documents = get_documents
 
 // Get Sepcific Document
-function get_document(doc_id) {
-  let documents = {}
+function get_document(req_array) {
+  applib.logger("DEBUG: get_document")
+  applib.logger(JSON.stringify(req_array, null, 2))
 
-  switch (doc_id) {
-    case "":
-      for (let did in config.DOCUMENTS) {
-        documents[did] = {}
-    
-        for (did_key in config.DOCUMENTS[did]) {
-          switch (did_key) {
-            case 'TITLE':
-              documents[did][did_key] = config.DOCUMENTS[did][did_key]
-              documents[did]['URL'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did)
-          
-            default:
-              documents[did][did_key] = config.DOCUMENTS[did][did_key]
-              break;
+  let documents = get_documents()['PAYLOAD']
+  let document = {}
+  let payload = {}
+  payload['CONTENT-TYPE'] = 'application/json'
+  payload['PAYLOAD']      = ''
+
+  if (Object.keys(documents).includes(req_array[1]))  { // DocID
+    applib.logger("DEBUG: Checkpoint 5")
+
+    if (req_array[2]) { // Document Version
+
+      if (Object.keys(documents[req_array[1]]['VERSIONS']).includes(req_array[2]))  {
+        applib.logger("DEBUG: Checkpoint 6")
+        document = {}
+
+        if(req_array[3]) { // Docuemnt Type
+
+          if (Object.keys(documents[req_array[1]]['VERSIONS'][req_array[2]]['API']).includes(req_array[3]))  {
+
+            let filepath = path.join(config.APP.DATA_DIR,config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]])
+
+            applib.logger("DEBUG: Checkpoint 10")
+            // applib.logger(req_array[3] + ': ' + documents[req_array[1]]['VERSIONS'][req_array[2]]['API'][req_array[3]])
+            // applib.logger(filepath)
+
+            switch (req_array[3]) {
+              case 'PDF':
+                payload['CONTENT-TYPE'] = 'application/pdf'
+                payload['FILENAME'] = config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]].split(/\//)[1]
+                document = fs.readFileSync(filepath);
+                break;
+            
+              case 'CSV':
+                payload['CONTENT-TYPE'] = 'text/csv'
+                payload['FILENAME'] = config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]].split(/\//)[1]
+                document = fs.readFileSync(filepath, 'utf-8');
+                break;
+            
+              default:
+                payload['CONTENT-TYPE'] = 'application/json'
+                break;
+            }
+
+          } else {
+            applib.logger("DEBUG: Checkpoint 11")
+            let err = {}
+            err['ERROR'] = "Unknown Document Type: " + req_array[3]
+            document = err    
           }
-        }   
-      }
-      break;
 
-  }
-  
-  return documents
+
+        } else {
+          applib.logger("DEBUG: Checkpoint 12")
+
+          // applib.logger(JSON.stringify(documents[req_array[1]], null, 2))
+          // applib.logger(JSON.stringify(documents[req_array[1]]['VERSIONS'][req_array[2]], null, 2))
+          document = documents[req_array[1]]['VERSIONS'][req_array[2]]
+        }
+
+
+      } else {
+        applib.logger("DEBUG: Checkpoint 7")
+        let err = {}
+        err['ERROR'] = "Unknown Version: " + req_array[2]
+        document = err
+      }
+
+    } else {
+      applib.logger("DEBUG: Checkpoint 8")
+      // applib.logger(JSON.stringify(documents[req_array[1]], null, 2))
+      document = documents[req_array[1]]
+    }
+
+  } else {
+    applib.logger("DEBUG: Checkpoint 9")
+    let err = {}
+    err['ERROR'] = "Unknown Document: " + req_array[1]
+    document = err
+  }  
+
+
+  payload['PAYLOAD'] = document
+  // applib.logger(JSON.stringify(payload, null, 2))
+
+  return payload
 }
 
-exports.get_document = get_document
+exports.get_document = get_documents
