@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "csv-parser": "^3.0.0",
+    "csvtojson": "^2.0.10",
     "ecstatic": "^4.1.4",
     "express": "^4.17.1",
     "htpasswd": "^2.4.5",

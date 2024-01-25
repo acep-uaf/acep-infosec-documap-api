@@ -2,6 +2,7 @@ const path          = require('path')
 const fs            = require('fs')
 const os            = require('os')
 const {v4 : uuidv4} = require('uuid')
+const csv           = require('csvtojson');
 const applib        = require(path.join(__dirname, 'app-lib.js'))
 const config        = require('./config')
 
@@ -44,29 +45,29 @@ function api_router(req_array) {
   let payload = {}
   payload['CONTENT-TYPE'] = 'application/json'
 
-  applib.logger(JSON.stringify(req_array, null, 2))
+  // applib.logger(JSON.stringify(req_array, null, 2))
 
   switch (req_array[0]) {
     case 'documents':
       let documents = get_documents()
-      applib.logger(JSON.stringify(Object.keys(documents['PAYLOAD']), null, 2))
+      // applib.logger(JSON.stringify(Object.keys(documents['PAYLOAD']), null, 2))
       if (req_array[1]) {
         if (Object.keys(documents['PAYLOAD']).includes(req_array[1]))  {
-          applib.logger("DEBUG: Checkpoint 1")
+          // applib.logger("DEBUG: Checkpoint 1")
           return get_document(req_array)
         } else {
-          applib.logger("DEBUG: Checkpoint 2")
+          // applib.logger("DEBUG: Checkpoint 2")
           let err = {}
           err['ERROR'] = "Unknown Document: " + req_array[1]
           payload['PAYLOAD'] = err
           return payload
         }
       } else {
-        applib.logger("DEBUG: Checkpoint 3")
+        // applib.logger("DEBUG: Checkpoint 3")
         return get_documents()
       }  
     default:
-      applib.logger("DEBUG: Checkpoint 4")
+      // applib.logger("DEBUG: Checkpoint 4")
 
       payload['PAYLOAD'] = get_usage()
       return payload
@@ -107,7 +108,7 @@ exports.access_denied = access_denied
 // Get a list of Documents
 
 function get_documents() {
-  applib.logger("DEBUG: get_documents")
+  // applib.logger("DEBUG: get_documents")
   let documents = {}
 
   for (let did in config.DOCUMENTS) { // did = Document ID
@@ -146,7 +147,16 @@ function get_documents() {
                 case 'API':
                   documents[did][did_key][dv][dt] = {}
                   for (dau in config.DOCUMENTS[did][did_key][dv][dt]) { // Document API URL
-                    documents[did][did_key][dv][dt][dau] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dau)
+                    switch (dau) {
+                      case 'CSV':
+                        documents[did][did_key][dv][dt][dau] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dau)
+                        documents[did][did_key][dv][dt]['CSV2JSON'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/CSV2JSON'
+                        break;
+                    
+                      default:
+                        documents[did][did_key][dv][dt][dau] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dau)
+                        break;
+                    }
                   }
                   break;
                 
@@ -178,8 +188,8 @@ exports.get_documents = get_documents
 
 // Get Sepcific Document
 function get_document(req_array) {
-  applib.logger("DEBUG: get_document")
-  applib.logger(JSON.stringify(req_array, null, 2))
+  // applib.logger("DEBUG: get_document")
+  // applib.logger(JSON.stringify(req_array, null, 2))
 
   let documents = get_documents()['PAYLOAD']
   let document = {}
@@ -188,21 +198,30 @@ function get_document(req_array) {
   payload['PAYLOAD']      = ''
 
   if (Object.keys(documents).includes(req_array[1]))  { // DocID
-    applib.logger("DEBUG: Checkpoint 5")
+    // applib.logger("DEBUG: Checkpoint 5")
 
     if (req_array[2]) { // Document Version
 
       if (Object.keys(documents[req_array[1]]['VERSIONS']).includes(req_array[2]))  {
-        applib.logger("DEBUG: Checkpoint 6")
+        // applib.logger("DEBUG: Checkpoint 6")
         document = {}
 
         if(req_array[3]) { // Docuemnt Type
 
           if (Object.keys(documents[req_array[1]]['VERSIONS'][req_array[2]]['API']).includes(req_array[3]))  {
 
-            let filepath = path.join(config.APP.DATA_DIR,config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]])
+            let filepath = ''
+            switch (req_array[3]) {
+              case 'CSV2JSON':
+                filepath = path.join(config.APP.DATA_DIR,config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API['CSV'])
+                break;
+            
+              default:
+                filepath = path.join(config.APP.DATA_DIR,config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]])
+              break;
+            }
 
-            applib.logger("DEBUG: Checkpoint 10")
+            // applib.logger("DEBUG: Checkpoint 10")
             // applib.logger(req_array[3] + ': ' + documents[req_array[1]]['VERSIONS'][req_array[2]]['API'][req_array[3]])
             // applib.logger(filepath)
 
@@ -218,14 +237,33 @@ function get_document(req_array) {
                 payload['FILENAME'] = config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]].split(/\//)[1]
                 document = fs.readFileSync(filepath, 'utf-8');
                 break;
-            
-              default:
+
+              case 'CSV2JSON':
+                filepath = path.join(config.APP.DATA_DIR,config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API['CSV'])
+                payload['CONTENT-TYPE'] = 'application/json';
+                payload['FILENAME'] = config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API['CSV'].split(/\//)[1].replace(RegExp('\.csv$'), '.json');
+
+                // applib.logger('CSV2JSON: ' + filepath)
+                // applib.logger('CSV2JSON: ' + payload['FILENAME'])
+
+                document = convertCsvToJson(fs.readFileSync(filepath, 'utf-8'))
+                break;
+
+              case 'JSON':
                 payload['CONTENT-TYPE'] = 'application/json'
+                payload['FILENAME'] = config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]].split(/\//)[1]
+                document = JSON.parse(fs.readFileSync(filepath, 'utf-8'))
+                break;
+  
+              default:
+                payload['CONTENT-TYPE'] = 'text/plain'
+                payload['FILENAME'] = config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]].split(/\//)[1]
+                document = fs.readFileSync(filepath, 'utf-8')
                 break;
             }
 
           } else {
-            applib.logger("DEBUG: Checkpoint 11")
+            // applib.logger("DEBUG: Checkpoint 11")
             let err = {}
             err['ERROR'] = "Unknown Document Type: " + req_array[3]
             document = err    
@@ -233,7 +271,7 @@ function get_document(req_array) {
 
 
         } else {
-          applib.logger("DEBUG: Checkpoint 12")
+          // applib.logger("DEBUG: Checkpoint 12")
 
           // applib.logger(JSON.stringify(documents[req_array[1]], null, 2))
           // applib.logger(JSON.stringify(documents[req_array[1]]['VERSIONS'][req_array[2]], null, 2))
@@ -242,20 +280,20 @@ function get_document(req_array) {
 
 
       } else {
-        applib.logger("DEBUG: Checkpoint 7")
+        // applib.logger("DEBUG: Checkpoint 7")
         let err = {}
         err['ERROR'] = "Unknown Version: " + req_array[2]
         document = err
       }
 
     } else {
-      applib.logger("DEBUG: Checkpoint 8")
+      // applib.logger("DEBUG: Checkpoint 8")
       // applib.logger(JSON.stringify(documents[req_array[1]], null, 2))
       document = documents[req_array[1]]
     }
 
   } else {
-    applib.logger("DEBUG: Checkpoint 9")
+    // applib.logger("DEBUG: Checkpoint 9")
     let err = {}
     err['ERROR'] = "Unknown Document: " + req_array[1]
     document = err
@@ -269,3 +307,64 @@ function get_document(req_array) {
 }
 
 exports.get_document = get_documents
+
+
+// function convertCsvToJson(csvText) {
+//   if (!csvText || typeof csvText !== 'string') {
+//       throw new Error('Invalid input: CSV text is empty or undefined.');
+//   }
+
+//   const lines = csvText.trim().split('\n');
+//   if (lines.length < 2) {
+//       throw new Error('Invalid input: CSV text does not contain valid data.');
+//   }
+
+//   const headers = lines.shift().split(',').map(header => header.trim());
+//   const jsonArray = [];
+
+//   lines.forEach(line => {
+//       const values = line.split(',');
+//       const obj = {};
+
+//       headers.forEach((header, index) => {
+//           obj[header] = values[index] ? values[index].trim() : '';
+//       });
+
+//       jsonArray.push(obj);
+//   });
+
+//   return jsonArray;
+// }
+
+
+function convertCsvToJson(csvText) {
+  if (!csvText || typeof csvText !== 'string') {
+      throw new Error('Invalid input: CSV text is empty or undefined.');
+  }
+
+  const lines = csvText.trim().split('\n');
+  if (lines.length < 2) {
+      throw new Error('Invalid input: CSV text does not contain valid data.');
+  }
+
+  const headers = lines.shift().split(',').map(header => header.trim());
+  const jsonArray = [];
+
+  lines.forEach(line => {
+      const values = line.split(',');
+      const obj = {};
+
+      headers.forEach((header, index) => {
+          obj[header] = values[index] ? encodeURIComponent(values[index].trim()) : '';
+      });
+
+      jsonArray.push(obj);
+  });
+
+  return jsonArray;
+}
+
+
+
+
+exports.convertCsvToJson = convertCsvToJson
