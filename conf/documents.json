@@ -1,5 +1,6 @@
 {
     "INCLUDES": {
+        "CIS":"CIS.json",
         "NIST_800-171":"NIST_800-171.json",
         "TrustedCI_FW":"TrustedCI_FW.json"
     }

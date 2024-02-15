@@ -2,7 +2,7 @@ const path          = require('path')
 const fs            = require('fs')
 const os            = require('os')
 const {v4 : uuidv4} = require('uuid')
-const csv           = require('csvtojson');
+const xlsx          = require('xlsx');
 const applib        = require(path.join(__dirname, 'app-lib.js'))
 const config        = require('./config')
 
@@ -144,6 +144,10 @@ function get_documents() {
                   documents[did][did_key][dv][dt] = config.DOCUMENTS[did][did_key][dv][dt]
                   break;
   
+                case 'MAPPINGS':
+                  documents[did][did_key][dv][dt] = config.DOCUMENTS[did][did_key][dv][dt]
+                  break;
+
                 case 'API':
                   documents[did][did_key][dv][dt] = {}
                   for (dau in config.DOCUMENTS[did][did_key][dv][dt]) { // Document API URL
@@ -153,6 +157,11 @@ function get_documents() {
                         documents[did][did_key][dv][dt]['CSV2JSON'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/CSV2JSON'
                         break;
                     
+                      case 'XLSX':
+                        documents[did][did_key][dv][dt][dau] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dau)
+                        documents[did][did_key][dv][dt]['XLSX2JSON'] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/XLSX2JSON'
+                        break;
+
                       default:
                         documents[did][did_key][dv][dt][dau] = config.WEB.BASE_URL + "/api/documents/" + encodeURIComponent(did) + '/' + encodeURIComponent(dv) + '/' +encodeURIComponent(dau)
                         break;
@@ -249,6 +258,24 @@ function get_document(req_array) {
                 document = convertCsvToJson(fs.readFileSync(filepath, 'utf-8'))
                 break;
 
+
+              case 'XLSX':
+                payload['CONTENT-TYPE'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheetcsv'
+                payload['FILENAME'] = config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]].split(/\//)[1]
+                document = fs.readFileSync(filepath);
+                break;
+
+              case 'XLSX2JSON':
+                filepath = path.join(config.APP.DATA_DIR,config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API['XLXS'])
+                payload['CONTENT-TYPE'] = 'application/json';
+                payload['FILENAME'] = config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API['XLXS'].split(/\//)[1].replace(RegExp('\.csv$'), '.json');
+
+                // applib.logger('CSV2JSON: ' + filepath)
+                // applib.logger('CSV2JSON: ' + payload['FILENAME'])
+
+                document = convertXlsxToJson(filepath);
+                break;
+
               case 'JSON':
                 payload['CONTENT-TYPE'] = 'application/json'
                 payload['FILENAME'] = config.DOCUMENTS[req_array[1]].VERSIONS[req_array[2]].API[req_array[3]].split(/\//)[1]
@@ -309,34 +336,6 @@ function get_document(req_array) {
 exports.get_document = get_documents
 
 
-// function convertCsvToJson(csvText) {
-//   if (!csvText || typeof csvText !== 'string') {
-//       throw new Error('Invalid input: CSV text is empty or undefined.');
-//   }
-
-//   const lines = csvText.trim().split('\n');
-//   if (lines.length < 2) {
-//       throw new Error('Invalid input: CSV text does not contain valid data.');
-//   }
-
-//   const headers = lines.shift().split(',').map(header => header.trim());
-//   const jsonArray = [];
-
-//   lines.forEach(line => {
-//       const values = line.split(',');
-//       const obj = {};
-
-//       headers.forEach((header, index) => {
-//           obj[header] = values[index] ? values[index].trim() : '';
-//       });
-
-//       jsonArray.push(obj);
-//   });
-
-//   return jsonArray;
-// }
-
-
 function convertCsvToJson(csvText) {
   if (!csvText || typeof csvText !== 'string') {
       throw new Error('Invalid input: CSV text is empty or undefined.');
@@ -368,3 +367,26 @@ function convertCsvToJson(csvText) {
 
 
 exports.convertCsvToJson = convertCsvToJson
+
+
+function convertXlsxToJson(filePath) {
+  // Read the Excel file synchronously
+  const workbook = xlsx.readFile(filePath);
+
+  // Initialize an empty JSON array to store the data
+  const jsonArray = [];
+
+  // Process each sheet in the workbook
+  workbook.SheetNames.forEach(sheetName => {
+      // Convert the sheet to JSON
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = xlsx.utils.sheet_to_json(worksheet);
+
+      // Add the JSON data to the array
+      jsonArray.push({ [sheetName]: jsonData });
+  });
+
+  return jsonArray;
+}
+
+exports.convertXlsxToJson = convertXlsxToJson

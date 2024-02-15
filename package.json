@@ -21,14 +21,13 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "csv-parser": "^3.0.0",
-    "csvtojson": "^2.0.10",
     "ecstatic": "^4.1.4",
     "express": "^4.17.1",
     "htpasswd": "^2.4.5",
     "http-auth": "^4.1.9",
     "is-admin": "^3.0.0",
     "netaddr": "^1.1.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "xlsx": "^0.18.5"
   }
 }

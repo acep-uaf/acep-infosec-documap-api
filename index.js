@@ -69,6 +69,14 @@ app.use('/api/*', function(req, res) {
       res.status(200).send(responseData['PAYLOAD']);
       break;
 
+    case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheetcsv':
+      // Handle XLSX content
+      // Convert your responseData['PAYLOAD'] to CSV format
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheetcsv');
+      res.setHeader('Content-Disposition', 'attachment; filename="' + responseData['FILENAME'] + '"');
+      res.status(200).send(responseData['PAYLOAD']);
+      break;
+  
     case 'text/csv':
       // Handle CSV content
       // Convert your responseData['PAYLOAD'] to CSV format
