@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "ecstatic": "^4.1.4",
-    "express": "^4.17.1",
+    "express": "^4.19.2",
     "htpasswd": "^2.4.5",
     "http-auth": "^4.1.9",
     "is-admin": "^3.0.0",
