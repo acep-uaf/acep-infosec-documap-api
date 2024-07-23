@@ -1,0 +1,34 @@
+{
+    "DOC_ID":"CIS",
+    "TITLE":"Center for Internet Security Critical Security Controls",
+    "SOURCE": {
+        "WEBSITE":"https://www.cisecurity.org/controls",
+        "TOS":"https://www.cisecurity.org/terms-of-use-for-non-member-cis-products",
+        "PRIVACY":"https://www.cisecurity.org/privacy-notice",
+        "LICENSE":"Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License",
+        "LICENSE_URL":"https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+    },
+    "VERSIONS":{
+        "7.1":{
+            "SOURCE" :{
+                "WEBSITE":"https://learn.cisecurity.org/CIS-Controls-v7.1"
+            },
+            "API":{
+                "PDF":"CIS/CIS-Controls-Version-7-1.pdf",
+                "XLSX":"CIS/CIS Controls Version 7.1 Implementation Groups 1.2.xlsx"    
+            }
+        },
+        "8":{
+            "SOURCE":{
+                "WEBSITE":"https://learn.cisecurity.org/cis-controls-download"
+            },
+            "API": {
+                "PDF":"CIS/CIS_Controls__v8__Critical_Security_Controls__2023_08.pdf", 
+                "XLSX":"CIS/CIS_Controls_Version_8.xlsx"
+            },
+            "MAPPINGS":{
+                "NIST_800-171_R2":"CIS/CIS_Mappings/CIS_Controls_v8_Mapping_to_800_171_Rev_2_2_2023.xlsx"
+            }
+        }      
+    }
+}
